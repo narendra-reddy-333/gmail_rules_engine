@@ -1,0 +1,46 @@
+[
+  {
+    "predicate": "all",
+    "conditions": [
+      {
+        "field": "from",
+        "predicate": "contains",
+        "value": "john.doe@example.com"
+      },
+      {
+        "field": "subject",
+        "predicate": "contains",
+        "value": "Urgent"
+      }
+    ],
+    "actions": [
+      {
+        "action": "mark_as_read"
+      },
+      {
+        "action": "move_to_label",
+        "label": "Important"
+      }
+    ]
+  },
+  {
+    "predicate": "any",
+    "conditions": [
+      {
+        "field": "from",
+        "predicate": "equals",
+        "value": "jane.doe@example.com"
+      },
+      {
+        "field": "date",
+        "predicate": "less_than",
+        "value": "7 days ago"
+      }
+    ],
+    "actions": [
+      {
+        "action": "mark_as_unread"
+      }
+    ]
+  }
+]

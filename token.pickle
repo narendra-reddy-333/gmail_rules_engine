@@ -1,0 +1,6 @@
+{
+  "access_token": "YOUR_ACCESS_TOKEN",
+  "refresh_token": "YOUR_REFRESH_TOKEN",
+  "token_type": "Bearer",
+  "expiry": "2023-11-17T12:34:56.789012Z"
+}
