@@ -51,10 +51,11 @@ Installation
     * Rename the JSON file to `credentials.json` and place it in the project directory.
 
 4. Running the Scripts:
+   * Run the tests for code.
    * Run `main.py` to fetch emails and store them in the database and apply rules.
-   ```bash
-    python main.py
-    ```
+     ```bash
+      python main.py
+      ```
 
 **Rules Configuration**
 
