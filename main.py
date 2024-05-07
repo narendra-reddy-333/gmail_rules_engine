@@ -14,15 +14,14 @@ def main():
     email_db = EmailDatabase()
     # create email table
     email_db.create_table()
+    # Store emails in database
+
     email_db.store_emails(emails)
 
     # Initialize Rules Parser.
     rules_parser = RulesProcessor(gmail_api=gmail_api, email_db=email_db)
     # Process emails based on rules
     processed_emails = rules_parser.process_emails()
-
-    # Store emails in database
-    email_db.store_emails(processed_emails)
 
 
 if __name__ == '__main__':
