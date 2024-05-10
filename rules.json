@@ -29,17 +29,36 @@
       {
         "field": "from",
         "predicate": "equals",
-        "value": "jane.doe@example.com"
+        "value": "spam@example.com"
       },
       {
-        "field": "date",
-        "predicate": "less_than",
-        "value": "7 days ago"
+        "field": "subject",
+        "predicate": "contains",
+        "value": "lottery"
       }
     ],
     "actions": [
       {
-        "action": "mark_as_unread"
+        "action": "move_to_folder",
+        "folder": "Spam"
+      }
+    ]
+  },
+  {
+    "predicate": "all",
+    "conditions": [
+      {
+        "field": "date",
+        "predicate": "greater_than",
+        "value": "30"
+      },
+      {
+      }
+    ],
+    "actions": [
+      {
+        "action": "move_to_folder",
+        "folder": "Trash"
       }
     ]
   }
