@@ -14,10 +14,10 @@ SCOPES = ['https://www.googleapis.com/auth/gmail.readonly',
 
 class GmailAPI:
     def __init__(self):
-        self.service = self.get_gmail_service()
+        self.service = self._get_gmail_service()
 
     @staticmethod
-    def get_gmail_service():
+    def _get_gmail_service():
         creds = None
         # The file token.pickle stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
@@ -33,19 +33,19 @@ class GmailAPI:
                 flow = InstalledAppFlow.from_client_secrets_file(
                     'credentials.json', SCOPES)
                 creds = flow.run_local_server(port=0)
-            # Save the credentials for the next run
             with open('token.pickle', 'wb') as token:
                 pickle.dump(creds, token)
-
         service = build('gmail', 'v1', credentials=creds)
         return service
 
     def fetch_emails(self, query=None, max_results=10):
-        results = self.service.users().messages().list(userId='me', q=query, maxResults=max_results).execute()
+        results = self.service.users().messages().list(userId='me', q=query,
+                                                       maxResults=max_results).execute()
         messages = results.get('messages', [])
         email_data = []
         for message in messages:
-            msg = self.service.users().messages().get(userId='me', id=message['id'], format='raw').execute()
+            msg = self.service.users().messages().get(userId='me', id=message['id'],
+                                                      format='raw').execute()
             msg_str = base64.urlsafe_b64decode(msg['raw'].encode('ASCII'))
             mime_msg = parser.Parser().parsestr(msg_str.decode())
             email_data.append({
@@ -53,12 +53,12 @@ class GmailAPI:
                 'from': mime_msg['From'],
                 'subject': mime_msg['Subject'],
                 'date': mime_msg['Date'],
-                'body': self.get_body(mime_msg)
+                'body': self._get_body(mime_msg)
             })
         return email_data
 
     @staticmethod
-    def get_body(msg):
+    def _get_body(msg):
         if msg.is_multipart():
             for part in msg.walk():
                 ctype = part.get_content_type()
@@ -89,3 +89,11 @@ class GmailAPI:
             if label['name'] == label_name:
                 return label['id']
         return None  # Label not found
+
+    def move_to_folder(self, message_id, folder_name):
+        if folder_name in ['Trash', 'Spam']:
+            self.service.users().messages().trash(userId='me', id=message_id).execute()
+        elif folder_name == 'Inbox':
+            self.service.users().messages().untrash(userId='me', id=message_id).execute()
+        else:
+            raise ValueError("Invalid folder name")

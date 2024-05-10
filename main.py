@@ -12,10 +12,8 @@ def main():
 
     # Initialize Email Database
     email_db = EmailDatabase()
-    # create email table
-    email_db.create_table()
-    # Store emails in database
 
+    # Store emails in database
     email_db.store_emails(emails)
 
     # Initialize Rules Parser.
